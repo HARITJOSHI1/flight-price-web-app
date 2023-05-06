@@ -24,7 +24,9 @@ export const getIataCode = tryCatch(async (req, res) => {
   );
 
   // 3. return the response
-  res.json({data: response.data[0]});
+  if (response.data.length === 0)
+    throw new ApiError(404, "No Flights available");
+  res.json({ data: response.data[0] });
 });
 
 export const getPrice = tryCatch(async (req, res) => {
