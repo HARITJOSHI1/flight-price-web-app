@@ -1,5 +1,4 @@
 import axios from "axios";
-import ExternalErrorHandler from "../../Errors/ExternalError";
 import { DetailError, SystemError } from "../../types/res/AmadeusErrorTypes";
 import ExternalError from "../../Errors/ExternalError";
 
@@ -13,11 +12,7 @@ export const isOfTypeAmadeusDetailError = (
     Array.isArray(response.errors) &&
     response.errors.length > 0 &&
     typeof response.errors[0] === "object" &&
-    Object.keys(response.errors[0]).length === 3 &&
-    response.errors[0].status in response["errors"][0] &&
-    response.errors[0].code in response["errors"][0] &&
-    response.errors[0].title in response["errors"][0] &&
-    response.errors[0].details in response["errors"][0]
+    Object.keys(response.errors[0]).length > 3
   )
     return true;
   return false;
@@ -33,10 +28,7 @@ export const isOfTypeAmadeusSystemError = (
     Array.isArray(response.errors) &&
     response.errors.length > 0 &&
     typeof response.errors[0] === "object" &&
-    Object.keys(response.errors[0]).length === 3 &&
-    response.errors[0].status in response["errors"][0] &&
-    response.errors[0].code in response["errors"][0] &&
-    response.errors[0].title in response["errors"][0]
+    Object.keys(response.errors[0]).length === 3
   )
     return true;
   return false;

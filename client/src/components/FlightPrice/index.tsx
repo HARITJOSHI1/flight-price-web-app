@@ -4,6 +4,7 @@ import "./styles.css";
 import { getCityToIATA } from "../../utils/getCityToIata";
 import { FlightPriceSetters } from "../../pages/FlightDetails";
 import { FlightApiError } from "../../types/ErrorTypes";
+import { isAmadeusError, isString } from "../../guards/guards";
 
 interface FlightDetails {
   source: { val: string; err?: string };
@@ -59,13 +60,13 @@ function FlightPrice(props: Props): JSX.Element {
 
     try {
       setIsLoading(true);
+      props.setters.setError("");
+      props.setters.setPrice(undefined);
+
       const { source, destination, date, passengers } = details;
-      console.log(details);
 
       const src = await getCityToIATA(source.val.toLowerCase());
       const dest = await getCityToIATA(destination.val.toLowerCase());
-
-      console.log(src, dest);
 
       const { data } = await axios.get<{ [key: string]: string[] }>(
         `https://flight-price-api.up.railway.app/api/v1/flights/prices`,
@@ -85,8 +86,13 @@ function FlightPrice(props: Props): JSX.Element {
       const error = err as AxiosError<FlightApiError>;
       setIsLoading(false);
 
-      const message = error.response?.data?.error[0];
-      props.setters.setError(message?.detail || message?.title);
+      const message = error.response?.data;
+      if (isString(message?.error)) props.setters.setError(message?.error);
+      else if (isAmadeusError(message?.error)) {
+        props.setters.setError(
+          message?.error.errors[0]?.detail || message?.error.errors[0].title
+        );
+      }
     }
   };
 

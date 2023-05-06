@@ -34,7 +34,7 @@ export default function FlightDetailsPage() {
           }}
         />
 
-        {price && (
+        {(price && !err) && (
           <div
             style={{
               width: "40%",

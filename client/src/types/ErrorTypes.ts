@@ -1,16 +1,18 @@
+
 export interface FlightApiError {
-  error: Error[];
+  error: AmadeusError | string;
 }
 
-export interface Error {
+export interface AmadeusError {
+  errors: Error2[];
+}
+
+export interface Error2 {
   status: number;
   code: number;
   title: string;
-  detail?: string;
-  source?: Source;
+  detail: string;
+  source: Source;
 }
 
-export interface Source {
-  parameter: string;
-  example: string;
-}
+export interface Source {}
