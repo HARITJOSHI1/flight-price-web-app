@@ -74,6 +74,7 @@ function FlightPrice(): JSX.Element {
       );
 
       console.log(data);
+      setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
       console.log(err);
