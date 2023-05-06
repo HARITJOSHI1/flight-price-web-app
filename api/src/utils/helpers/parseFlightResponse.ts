@@ -4,12 +4,12 @@ import {
 } from "../../types/res/AmadeusResponses";
 
 interface Output {
-  [key: string]: number[];
+  [key: string]: string[];
 }
 
 export default function parseResponse(res: FlightOfferResponse) {
   const { carriers } = res.dictionaries; // list of airlines with their codes 
-  const airlinePriceRec: Record<string, number[]> = {};
+  const airlinePriceRec: Record<string, string[]> = {};
   const output: Output = {};
 
   res.data.forEach((d) => {
@@ -27,7 +27,7 @@ export default function parseResponse(res: FlightOfferResponse) {
 
       //   Push the prices of different airlines
       Object.keys(carriers).forEach((val) =>
-        airlinePriceRec[val]?.push(+d.price.grandTotal)
+        airlinePriceRec[val]?.push(`₹${d.price.grandTotal}`)
       );
     });
   });

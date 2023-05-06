@@ -7,6 +7,7 @@ export default class ExternalErrorHandler<T> {
     if(this.isOfTypeIssue(data)) this.message = data.title;
   }
 
+  // Type guard for Issue type
   private isOfTypeIssue = (err: unknown): err is Issue => {
     if(err && typeof err === 'object' && 'source' in err) return true;
     return false;
