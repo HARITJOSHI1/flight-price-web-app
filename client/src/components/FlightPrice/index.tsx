@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import "./styles.css";
 import { getCityToIATA } from "../../utils/getCityToIata";
+import { FlightPriceSetters } from "../../pages/FlightDetails";
+import { FlightApiError } from "../../types/ErrorTypes";
 
 interface FlightDetails {
   source: { val: string; err?: string };
@@ -10,7 +12,11 @@ interface FlightDetails {
   passengers: { val: string; err?: string };
 }
 
-function FlightPrice(): JSX.Element {
+interface Props {
+  setters: FlightPriceSetters;
+}
+
+function FlightPrice(props: Props): JSX.Element {
   const [details, setDetails] = useState<FlightDetails>({
     source: { val: "" },
     destination: { val: "" },
@@ -55,12 +61,12 @@ function FlightPrice(): JSX.Element {
       setIsLoading(true);
       const { source, destination, date, passengers } = details;
       console.log(details);
-    
+
       const src = await getCityToIATA(source.val.toLowerCase());
       const dest = await getCityToIATA(destination.val.toLowerCase());
 
       console.log(src, dest);
-      
+
       const { data } = await axios.get<{ [key: string]: string[] }>(
         `https://flight-price-api.up.railway.app/api/v1/flights/prices`,
         {
@@ -73,11 +79,14 @@ function FlightPrice(): JSX.Element {
         }
       );
 
-      console.log(data);
       setIsLoading(false);
+      props.setters.setPrice(data);
     } catch (err) {
+      const error = err as AxiosError<FlightApiError>;
       setIsLoading(false);
-      console.log(err);
+
+      const message = error.response?.data?.error[0];
+      props.setters.setError(message?.detail || message?.title);
     }
   };
 
@@ -169,7 +178,11 @@ function FlightPrice(): JSX.Element {
         )}
       </div>
       <button className="submit-button" type="submit">
-        {isLoading ? <span> Hang tight... </span> : <span> Search Flights </span>}
+        {isLoading ? (
+          <span> Hang tight... </span>
+        ) : (
+          <span> Search Flights </span>
+        )}
       </button>
     </form>
   );
