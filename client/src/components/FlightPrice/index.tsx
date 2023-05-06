@@ -1,38 +1,58 @@
-import React, { useState } from 'react';
-import './styles.css';
+import React, { useState } from "react";
+import "./styles.css";
+
+interface FlightDetails {
+  source: { val: string; err?: string };
+  destination: { val: string; err?: string };
+  date: { val: string; err?: string };
+  passengers: { val: string; err?: string };
+}
 
 function FlightPrice(): JSX.Element {
-  const [source, setSource] = useState('');
-  const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
-  const [passengers, setPassengers] = useState<number>(1);
+  const [details, setDetails] = useState<FlightDetails>({
+    source: { val: "" },
+    destination: { val: "" },
+    date: { val: "" },
+    passengers: { val: "" },
+  });
 
-  const handleSourceChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSource(event.target.value);
+  const findErr = (details: FlightDetails, id: keyof FlightDetails) =>
+    details[id].err;
+
+  const handleDetailsChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const value = e.target.value;
+    const id = e.target.id.split("-")[0] as keyof FlightDetails;
+    setDetails({
+      ...details,
+      [id]: { val: value },
+    });
   };
 
-  const handleDestinationChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDestination(event.target.value);
-  };
-
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDate(event.target.value);
-  };
-
-  const handlePassengersChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassengers(Number(event.target.value));
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
 
-    const response = await fetch(`https://example.com/flights?source=${source}&destination=${destination}&date=${date}&passengers=${passengers}`);
-    const data = await response.json();
-    console.log(data); // do something with the response data
+    let isError = false;
+
+    Object.keys(details).forEach((key) => {
+      if (!details[key as keyof FlightDetails].val) {
+        isError = true;
+        details[key as keyof FlightDetails].err = "empty field not accepted";
+        setDetails({...details});
+      }
+    });
+
+    if (isError) return;
   };
 
   return (
-    <form className="flight-price-form" onSubmit={handleSubmit}>
+    <form
+      className="flight-price-form"
+      onSubmit={async (e) => await handleSubmit(e)}
+    >
       <div className="form-group">
         <label className="form-label" htmlFor="source-input">
           Source:
@@ -41,9 +61,17 @@ function FlightPrice(): JSX.Element {
           id="source-input"
           className="form-input"
           type="text"
-          value={source}
-          onChange={handleSourceChange}
+          value={details.source.val}
+          onChange={handleDetailsChange}
         />
+
+        {findErr(details, "source") && (
+          <label
+            style={{ display: "inline-block", fontSize: ".9rem", color: "red" }}
+          >
+            {findErr(details, "source")}
+          </label>
+        )}
       </div>
       <div className="form-group">
         <label className="form-label" htmlFor="destination-input">
@@ -53,9 +81,17 @@ function FlightPrice(): JSX.Element {
           id="destination-input"
           className="form-input"
           type="text"
-          value={destination}
-          onChange={handleDestinationChange}
+          value={details.destination.val}
+          onChange={handleDetailsChange}
         />
+
+        {findErr(details, "destination") && (
+          <label
+            style={{ display: "inline-block", fontSize: ".9rem", color: "red" }}
+          >
+            {findErr(details, "destination")}
+          </label>
+        )}
       </div>
       <div className="form-group">
         <label className="form-label" htmlFor="date-input">
@@ -65,9 +101,17 @@ function FlightPrice(): JSX.Element {
           id="date-input"
           className="form-input"
           type="date"
-          value={date}
-          onChange={handleDateChange}
+          value={details.date.val}
+          onChange={handleDetailsChange}
         />
+
+        {findErr(details, "date") && (
+          <label
+            style={{ display: "inline-block", fontSize: ".9rem", color: "red" }}
+          >
+            {findErr(details, "date")}
+          </label>
+        )}
       </div>
       <div className="form-group">
         <label className="form-label" htmlFor="passengers-input">
@@ -79,9 +123,17 @@ function FlightPrice(): JSX.Element {
           type="number"
           min="1"
           max="10"
-          value={passengers}
-          onChange={handlePassengersChange}
+          value={details.passengers.val}
+          onChange={handleDetailsChange}
         />
+
+        {findErr(details, "passengers") && (
+          <label
+            style={{ display: "inline-block", fontSize: ".9rem", color: "red" }}
+          >
+            {findErr(details, "passengers")}
+          </label>
+        )}
       </div>
       <button className="submit-button" type="submit">
         Search Flights
