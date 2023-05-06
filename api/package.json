@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "build": "tsc -p . && PowerShell -Command Copy-Item src/config.env -Destination ./dist -Recurse"
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
