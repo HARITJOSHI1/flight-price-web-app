@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./styles.css";
+import { getCityToIATA } from "../../utils/getCityToIata";
 
 interface FlightDetails {
   source: { val: string; err?: string };
@@ -15,6 +17,8 @@ function FlightPrice(): JSX.Element {
     date: { val: "" },
     passengers: { val: "" },
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const findErr = (details: FlightDetails, id: keyof FlightDetails) =>
     details[id].err;
@@ -41,11 +45,39 @@ function FlightPrice(): JSX.Element {
       if (!details[key as keyof FlightDetails].val) {
         isError = true;
         details[key as keyof FlightDetails].err = "empty field not accepted";
-        setDetails({...details});
+        setDetails({ ...details });
       }
     });
 
     if (isError) return;
+
+    try {
+      setIsLoading(true);
+      const { source, destination, date, passengers } = details;
+      console.log(details);
+    
+      const src = await getCityToIATA(source.val.toLowerCase());
+      const dest = await getCityToIATA(destination.val.toLowerCase());
+
+      console.log(src, dest);
+      
+      const { data } = await axios.get<{ [key: string]: string[] }>(
+        `https://flight-price-api.up.railway.app/api/v1/flights/prices`,
+        {
+          params: {
+            src,
+            dest,
+            date: date.val,
+            passengers: passengers.val,
+          },
+        }
+      );
+
+      console.log(data);
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+    }
   };
 
   return (
@@ -136,7 +168,7 @@ function FlightPrice(): JSX.Element {
         )}
       </div>
       <button className="submit-button" type="submit">
-        Search Flights
+        {isLoading ? <span> Hang tight... </span> : <span> Search Flights </span>}
       </button>
     </form>
   );

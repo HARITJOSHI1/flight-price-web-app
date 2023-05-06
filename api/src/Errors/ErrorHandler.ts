@@ -1,4 +1,4 @@
-import { Request, Response, Handler, ErrorRequestHandler } from "express";
+import { Request, Response } from "express";
 
 const devRes = <T>(err: T, res: Response) => {
     console.log('🛑Error occured in dev:', err);

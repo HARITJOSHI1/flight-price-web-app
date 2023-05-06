@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AuthCredentialResponse } from "../../types/res/AmadeusResponses";
+import { AuthCredentialResponse } from "../../types/res/AmadeusResponseTypes";
 
 export default async function getAuthToken(url: string) {
   const { data } = await axios.post<AuthCredentialResponse>(
