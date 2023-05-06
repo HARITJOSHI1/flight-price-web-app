@@ -27,7 +27,7 @@ export default function parseResponse(res: FlightOfferResponse) {
 
       //   Push the prices of different airlines
       Object.keys(carriers).forEach((val) =>
-        airlinePriceRec[val]?.push(`₹${d.price.grandTotal}`)
+        airlinePriceRec[val]?.push(`₹${(+d.price.grandTotal).toFixed()}`)
       );
     });
   });
