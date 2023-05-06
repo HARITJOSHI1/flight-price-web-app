@@ -3,7 +3,7 @@ import { ExpressAsyncFn } from "../types/ExpressAsyncFn";
 import ExternalErrorHandler from "../Errors/ExternalErrorHandler";
 
 // Special function to be a centeral entry point to catch errors from the callback functions
-export default function catchAsync(fun: ExpressAsyncFn) {
+export default function tryCatch(fun: ExpressAsyncFn) {
   return (req: Request, res: Response, next: NextFunction) => {
     fun(req, res, next).catch((err: Error) => {
       if (err instanceof ExternalErrorHandler)

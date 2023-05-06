@@ -22,8 +22,10 @@ app.use(cors(corsOpts));
 // Mount the price router
 app.use("/api/v1/flights", PriceRouter);
 
-// Handle 404
-app.all("*", (req, res, next) => next("404 route not found"));
+// Handle 404 error
+app.all("*", (req, res, next) =>
+  res.status(404).json({ error: "route not found" })
+);
 
 // Mount Error Handler
 app.use(ErrorHandler);

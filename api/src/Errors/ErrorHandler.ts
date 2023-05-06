@@ -1,7 +1,7 @@
 import { Request, Response, Handler, ErrorRequestHandler } from "express";
 
 const devRes = <T>(err: T, res: Response) => {
-    console.log(err);
+    console.log('🛑Error occured in dev:', err);
 
     // If err is of type Error
     if(err instanceof Error) res.status(500).json({error: err.message});

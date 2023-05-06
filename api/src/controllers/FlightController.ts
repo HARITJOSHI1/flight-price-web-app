@@ -1,10 +1,9 @@
-import axios from "axios";
-import catchAsync from "../utils/catchAsync";
+import tryCatch from "../utils/tryCatch";
 import parseResponse from "../utils/helpers/parseFlightResponse";
 import getAuthToken from "../utils/getters/getAuthToken";
 import getFlightOffersData from "../utils/getters/getFlightOffers";
 
-export const getPrice = catchAsync(async (req, res) => {
+export const getPrice = tryCatch(async (req, res) => {
   const { src, dest, date, passengers } = req.query;
 
   // 1. Get the auth token for authentication
