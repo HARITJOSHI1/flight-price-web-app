@@ -37,7 +37,7 @@ export const getPrice = tryCatch(async (req, res) => {
 
   // 2. Get the flight details
   const response = await getData<FlightOfferResponse>(
-    `https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${src}&destinationLocationCode=${dest}&departureDate=${date}&adults=${passengers}&nonStop=true&max=3&currencyCode=INR`,
+    `https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${src}&destinationLocationCode=${dest}&departureDate=${date}&adults=${passengers}&max=3&currencyCode=INR`,
     data.access_token
   );
   

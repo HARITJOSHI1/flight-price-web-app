@@ -8,7 +8,7 @@ export const isOfTypeAmadeusDetailError = (
   if (
     response &&
     typeof response === "object" &&
-    "errors" in response &&
+    ("errors" in response) &&
     Array.isArray(response.errors) &&
     response.errors.length > 0 &&
     typeof response.errors[0] === "object" &&
