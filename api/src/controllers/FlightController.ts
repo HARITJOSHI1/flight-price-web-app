@@ -40,7 +40,7 @@ export const getPrice = tryCatch(async (req, res) => {
     `https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${src}&destinationLocationCode=${dest}&departureDate=${date}&adults=${passengers}&nonStop=true&max=3&currencyCode=INR`,
     data.access_token
   );
-
+  
   // 3. Parse the output to desired format
   if (response.data.length === 0)
     throw new ApiError(404, "No Flights available");

@@ -29,7 +29,7 @@ export default function App() {
     <AuthStateStore.Provider value={{ currentUser, setCurrentUser }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/flightDetails" element={<FlightDetailsPage />} />
+          <Route path="/" element={<FlightDetailsPage />} />
           <Route path="*" element={<RouteNotFoundPage />} />
         </Routes>
       </BrowserRouter>
