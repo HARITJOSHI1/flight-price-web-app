@@ -1,0 +1,1 @@
+https://flight-price-api.up.railway.app/api/v1/flights/prices?src=DEL&dest=JAI&date=2023-07-15&passengers=2

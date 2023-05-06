@@ -1,7 +1,7 @@
 import {
   Carriers,
   FlightOfferResponse,
-} from "../../types/res/AmadeusResponses";
+} from "../../types/res/AmadeusResponseTypes";
 
 interface Output {
   [key: string]: string[];

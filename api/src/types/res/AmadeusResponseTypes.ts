@@ -1,3 +1,37 @@
+// IATA response
+export interface IATAResponse {
+  meta: Meta;
+  data: Daum[];
+}
+
+export interface Meta {
+  count: number;
+  links: Links;
+}
+
+export interface Links {
+  self: string;
+}
+
+export interface Daum {
+  type: string;
+  subType: string;
+  name: string;
+  iataCode: string;
+  address: Address;
+  geoCode: GeoCode;
+}
+
+export interface Address {
+  countryCode: string;
+  stateCode: string;
+}
+
+export interface GeoCode {
+  latitude: number;
+  longitude: number;
+}
+
 // Auth credentials to make requset for flight offer
 export interface AuthCredentialResponse {
   type: string;
@@ -16,21 +50,6 @@ export interface FlightOfferResponse {
   meta: Meta;
   data: Daum[];
   dictionaries: Dictionaries;
-  issue?: Issue;
-}
-
-export interface Issue {
-  status: number;
-  code: number;
-  title: string;
-  detail: string;
-  source: IssueSource;
-}
-
-export interface IssueSource {
-  pointer: string;
-  parameter: string;
-  example: string;
 }
 
 export interface Meta {
