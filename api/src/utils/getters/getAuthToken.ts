@@ -6,8 +6,8 @@ export default async function getAuthToken(url: string) {
     url,
     {
       grant_type: "client_credentials",
-      client_id: process.env.CLIENT_ID_DEV,
-      client_secret: process.env.CLIENT_SECRET_DEV,
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
     },
 
     {
