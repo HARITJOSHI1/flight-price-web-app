@@ -103,7 +103,7 @@ function FlightPrice(props: Props): JSX.Element {
     >
       <div className="form-group">
         <label className="form-label" htmlFor="source-input">
-          Source:
+          Source airport:
         </label>
         <input
           id="source-input"
@@ -123,7 +123,7 @@ function FlightPrice(props: Props): JSX.Element {
       </div>
       <div className="form-group">
         <label className="form-label" htmlFor="destination-input">
-          Destination:
+          Destinaton airport:
         </label>
         <input
           id="destination-input"
