@@ -5,10 +5,14 @@ import ErrorHandler from "./Errors/ErrorHandler";
 
 const app = express();
 
+const prodClientURL =
+  "https://master--singular-bienenstitch-cd5a3d.netlify.app/";
+const devClientURL = "http://localhost:3000";
+
 // CORS opts to accept request form client with different domains
 const corsOpts = {
   credentials: true,
-  origin: "http://localhost:3000",
+  origin: process.env.NODE_ENV === "development" ? devClientURL : prodClientURL,
   methods: ["GET", "POST"],
 
   allowedHeaders: ["Content-Type"],
